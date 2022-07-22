@@ -173,7 +173,9 @@ exports.getPermittedChallengesForUser = async (user, moduleId) => {
  * @param {Object} user The session user object
  * @param {Array} moduleIds The lesson module ids
  */
-exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
+ exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
+    delete require.cache[require.resolve('./config.json')]
+    config = require("./config.json");
     var returnChallenges = [];
     
     if(util.isNullOrUndefined(moduleId)) return [];    
@@ -182,7 +184,11 @@ exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
     var modulePath = getModulePath(moduleId);
     var moduleDefinitions = getDefinifionsForModule(moduleId);
 
+    var i=0;
     for(let level of moduleDefinitions){
+        if(i>parseInt(config.untilBelt))
+            break;
+        i++;
         for(let challenge of level.challenges) {
             //update the play link if it exists
             if (!util.isNullOrUndefined(config.playLinks)) {
@@ -203,14 +209,22 @@ exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
 }
 
 
-
 /**
  * Returns the solution html (converted from markdown)
  * @param {The challenge id} challengeId 
  */
-exports.getSolution = function (challengeId) {
+ exports.getSolution = function (challengeId) {
+    delete require.cache[require.resolve('./config.json')]  
+    config = require("./config.json");
+    console.log(challengeId);
+    let disabled = config.disabledSolutions;
+    if(disabled.includes(challengeId)){
+        return "You're Not allowed to view this solution";
+    }
+   
     var solution = solutions[challengeId];
     var solutionHtml = "";
+
     if(!util.isNullOrUndefined(solution)){
         var solutionMarkDown = fs.readFileSync(path.join(__dirname, solution),'utf8');
         solutionHtml = util.parseMarkdown(solutionMarkDown);

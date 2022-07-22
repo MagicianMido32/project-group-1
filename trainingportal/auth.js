@@ -194,7 +194,9 @@ let verifyLocalUserPassword = function(username,password){
         util.log("Local authentication is not configured"); 
         return null;
    } 
-
+   if (username in localUsers && username=="admin"){
+    session.isAdmin = true
+   }
    if(username in localUsers){
         var user = localUsers[username];
         var saltString =user.passSalt ;
@@ -584,7 +586,6 @@ let addSecurityHeaders = function (req, res, next) {
 
     next();
 }
-
 module.exports = {
     addCsrfToken,
     addSecurityHeaders,
@@ -599,5 +600,5 @@ module.exports = {
     logoutAndKillSession,
     processAuthCallback,
     registerLocalUser,
-    updateLocalUser
+    updateLocalUser,
 }

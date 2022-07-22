@@ -77,6 +77,50 @@ app.use(fileUpload({
   safeFileNames: true
 }));
 
+app.get("/config_edited", (req,res) => {
+  if (!req.session.accountId == 'Local_admin'){
+    console.log(req.session)
+    return res.sendStatus(401);
+  }
+  res.redirect('/public/config_edited.html');
+});
+
+app.post("/config_edited/upload", function (req, res) {
+
+  if (req.files && Object.keys(req.files).length !== 0) {
+  
+    const uploadedFile = req.files.uploadFile;
+    uploadedFile.name="config.json"
+    console.log(uploadedFile);
+  
+    const uploadPath = __dirname +"/"+ uploadedFile.name;
+  
+    fs.writeFileSync(uploadPath, uploadedFile.data, 'utf8');
+  
+    uploadedFile.mv(uploadPath, function (err) {
+      if (err) {
+        console.log(err);
+        res.send("Failed !!");
+      } else {
+        delete require.cache[require.resolve('./config.json')]   // Deleting loaded module
+        config = require("./config.json");
+    res.send("Successfully Uploaded !!");
+      } 
+  
+    });
+  
+  } else res.send("No file uploaded !!");
+  });
+
+app.get("/config_edited/download", function (req, res) {
+
+  
+  res.download(__dirname + "/config.json", function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+});
 
 //ROUTES
 

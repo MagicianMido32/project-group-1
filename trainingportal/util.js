@@ -13,6 +13,8 @@ exports.getDataDir = () => {
 }
 
 exports.getConfig = () => {
+  delete require.cache[require.resolve('./config.json')]   
+  config = require("./config.json");
   if(!config){
     let dataDir = exports.getDataDir();
     let configPath = path.join(dataDir, 'config.json');
