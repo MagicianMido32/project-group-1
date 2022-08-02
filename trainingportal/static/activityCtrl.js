@@ -1,4 +1,4 @@
-app.controller("activityCtrl", function($scope, $http) {
+app.controller("activityCtrl", function($scope, _$http) {
     
     $scope.fetchActivity();
 

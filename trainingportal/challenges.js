@@ -1,19 +1,14 @@
 /**
-
 Copyright 2017-2018 Trend Micro
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this work except in compliance with the License.
 You may obtain a copy of the License at
-
     https://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
  */
 const path = require('path');
 const fs = require('fs');
@@ -175,7 +170,7 @@ exports.getPermittedChallengesForUser = async (user, moduleId) => {
  */
  exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
     delete require.cache[require.resolve('./config.json')]
-    config = require("./config.json");
+    
     var returnChallenges = [];
     
     if(util.isNullOrUndefined(moduleId)) return [];    
@@ -215,7 +210,7 @@ exports.getPermittedChallengesForUser = async (user, moduleId) => {
  */
  exports.getSolution = function (challengeId) {
     delete require.cache[require.resolve('./config.json')]  
-    config = require("./config.json");
+   
     console.log(challengeId);
     let disabled = config.disabledSolutions;
     if(disabled.includes(challengeId)){

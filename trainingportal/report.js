@@ -19,30 +19,30 @@ const path = require("path");
 const db = require(path.join(__dirname, "db"));
 const util = require(path.join(__dirname, "util"));
 
-exports.parseReportCSV = (csvData) => {
+exports.parseReportCSV = (csvData)  {
     if(util.isNullOrUndefined(csvData)) return null;
     
-    var reportUsers = null;
+    let reportUsers = null;
     let csvText = Buffer.from(csvData).toString();
     //load the CSV
     if(!util.isNullOrUndefined(csvText)){
       //split the csv into lines
       reportUsers = {"totalMembers":0,"inProgressMembers":0,"completeMembers":0,"teamList":[]};
-      var lines = csvText.split("\n");
-      var linesCount = lines.length;
+      let lines = csvText.split("\n");
+      let linesCount = lines.length;
       if(linesCount > 1){
-        var teams = lines[0].trimRight().split(",");
-        var teamsCount = teams.length;
+        let teams = lines[0].trimRight().split(",");
+        let teamsCount = teams.length;
         if(teamsCount>=1){
           
-          for(var idx=0; idx<teamsCount; idx++){
+          for(let idx=0; idx<teamsCount; idx++){
             reportUsers.teamList[idx]={"team":teams[idx], "completed": 0, "members": []};
           }
   
-          for(var idx1=1;idx1<linesCount;idx1++){
-            var rowMembers = lines[idx1].trimRight().split(",");
+          for(let idx1=1;idx1<linesCount;idx1++){
+            let rowMembers = lines[idx1].trimRight().split(",");
   
-            for(var idx2=0; idx2<teamsCount; idx2++){
+            for(let idx2=0; idx2<teamsCount; idx2++){
               
               if(rowMembers[idx2].length>0){
                 reportUsers.teamList[idx2].members.push({"name":rowMembers[idx2].trim(),"status":"Not Started"});
@@ -57,7 +57,7 @@ exports.parseReportCSV = (csvData) => {
     return reportUsers;
   }
   
-  exports.getReportForModuleId = async (reportUsers, requiredModule) => {
+  exports.getReportForModuleId = async (reportUsers, requiredModule)  {
   
     //update the user status based on the users in the database
     reportUsers.completeMembers = 0;

@@ -7,7 +7,7 @@
 
 
   <blockquote>
-    <p><i>
+    <p><em>
        "When there is a need to <mark>store</mark> or <mark>transmit</mark> sensitive data, use strong, up-to-date cryptographic algorithms to encrypt that data. 
        Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations. 
        <br>
@@ -16,7 +16,7 @@
         Do not develop custom or private cryptographic algorithms. They will likely be exposed to attacks that are well-understood by cryptographers. 
         Reverse engineering techniques are mature. If the algorithm can be compromised if attackers find out how it works, then it is especially weak.
         Periodically ensure that the cryptography has not become obsolete. Some older algorithms, once thought to require a billion years of computing time, can now be broken in days or hours. 
-        This includes MD4, MD5, SHA1, DES, and other algorithms that were once regarded as strong."</i>
+        This includes MD4, MD5, SHA1, DES, and other algorithms that were once regarded as strong."</em>
     </p>
     <footer>From MITRE <a target="_blank" rel="noopener noreferrer" href="https://cwe.mitre.org/data/definitions/327.html">CWE 327</a></footer>
   </blockquote>
@@ -36,6 +36,7 @@ Same approach should be taken for other data such as PII or confidential informa
 <p>The table below lists approved algorithms for various types of data</p>
 
 <table class="table table-sm">
+<caption>lists approved algorithms for various types of data</caption>
     <thead>
         <tr>
             <th>Type of data</th>
@@ -94,6 +95,7 @@ It is also a vulnerability to ignore invalid server certificates.
 Here is a list of the few notable vulnerablity disclosures in SSL/TLS protocols and ciphers over the past few years.
 
 <table class="table">
+<caption>lists approved algorithms for various types of data</caption>
     <thead>
         <tr>
             <th>Bacronym</th>

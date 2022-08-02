@@ -6,13 +6,13 @@ const { createCanvas, loadImage } = require('canvas')
 const path = require('path');
 
 
-exports.drawBadge = async(data) => {
-    var badgeInfo = data.badgeInfo;
-    var awardLine1 = badgeInfo.line1;
-    var awardLine2 = badgeInfo.line2;
-    var awardLine3 = badgeInfo.line3;
-    var name = `${data.givenName} ${data.familyName}`;
-    var bg = badgeInfo.bg;
+exports.drawBadge = async(data)  {
+    let badgeInfo = data.badgeInfo;
+    let awardLine1 = badgeInfo.line1;
+    let awardLine2 = badgeInfo.line2;
+    let awardLine3 = badgeInfo.line3;
+    let name = `${data.givenName} ${data.familyName}`;
+    let bg = badgeInfo.bg;
 
     const top = 170;
     const left = 100;
@@ -40,7 +40,7 @@ exports.drawBadge = async(data) => {
     ctx.fillText(name, left, top + 400);
 
     
-    var img = await loadImage(path.join(__dirname, "public/passed.png"));
+    let img = await loadImage(path.join(__dirname, "public/passed.png"));
     ctx.drawImage(img, right, top - 80);
 
     ctx.font = "15px Courier New";
@@ -49,11 +49,11 @@ exports.drawBadge = async(data) => {
     ctx.fillText("49 20 53 45 20 56", right + 80, top + 70);
     ctx.fillText("49 4e 43 49 54", right + 95, top + 100);
 
-    var nameParts = name.split(" ");
+    let nameParts = name.split(" ");
     if(nameParts.length > 1){
-        var ini1 = nameParts[0].charCodeAt(0).toString(16);
-        var ini2 = nameParts[1].charCodeAt(0).toString(16);
-        var sp = " ".charCodeAt(0).toString(16);
+        let ini1 = nameParts[0].charCodeAt(0).toString(16);
+        let ini2 = nameParts[1].charCodeAt(0).toString(16);
+        let sp = " ".charCodeAt(0).toString(16);
         ctx.fillText(`${sp} ${ini1} ${sp} ${ini2}`, right + 110, top + 130);
     }
     let date = new Date(data.completion);

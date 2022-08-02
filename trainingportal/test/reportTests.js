@@ -23,8 +23,8 @@ const util = require('../report');
 
 describe('reportTests', () => {
     
-    var user = null;
-    var parsedCSV = null;
+    let user = null;
+    let parsedCSV = null;
     before(async () => {
         await db.getPromise(db.deleteUser,"utilUser");
         await db.getPromise(db.insertUser,{accountId:"utilUser",familyName:"LastUtil", givenName:"FirstUtil MiddleUtil"});
@@ -35,10 +35,10 @@ describe('reportTests', () => {
     describe('#parseReportCSV', async () => {
        
         it('should parse CSV', async () => {
-            var promise = new Promise(function(resolve,reject){
-                var csv = "Team1, Team2\nFirstUtil LastUtil, John Smith";
-                var data = [];
-                for(i=0;i<csv.length;i++) data.push(csv.charCodeAt(i));
+            let promise = new Promise(function(resolve,reject){
+                let csv = "Team1, Team2\nFirstUtil LastUtil, John Smith";
+                let data = [];
+                for(let i=0;i<csv.length;i++) data.push(csv.charCodeAt(i));
 
                 let parsed = util.parseReportCSV(data);
                 resolve(parsed);
@@ -58,7 +58,7 @@ describe('reportTests', () => {
     describe('#getReportForModuleId', async () => {
        
         it('should get an accurate report', async () => {
-            var promise = util.getReportForModuleId(parsedCSV, "blackBelt");
+            let promise = util.getReportForModuleId(parsedCSV, "blackBelt");
 
             let result = await promise;
             assert.notEqual(result,null,"Result should not be null");

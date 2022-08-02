@@ -19,7 +19,7 @@ Here is the correct way of executing a database query using prepared statements.
     stmt.setString(2, pwd); 
     ResultSet rs = ps.executeQuery(query);
 </pre>
-<b>Note:</b> Prepared statements will not protect against situations when the input is being again concatenated in an SQL Procedure. 
+<strong>Note:</strong> Prepared statements will not protect against situations when the input is being again concatenated in an SQL Procedure. 
 Input validation or moving the SQL logic into the middleware can prevent against those cases.
 </p>
 
@@ -42,7 +42,7 @@ This type of code below should be avoided.
     Process p = Runtime.getRuntime().exec("<mark>/bin/sh</mark>",commandArgs);
 </pre>
 
-Also the method will be useless when shell scripts, python, perl etc are called with the arguments. The injection may occur in the shell script. <b>Input Allow Listing</b> can prevent those situations.
+Also the method will be useless when shell scripts, python, perl etc are called with the arguments. The injection may occur in the shell script. <strong>Input Allow Listing</strong> can prevent those situations.
 
 </p>
 <br>

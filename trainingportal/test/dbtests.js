@@ -5,9 +5,11 @@ const { resolve } = require('path');
 //Test Suite
 
 //we need reference to a global promise so the tests don't run until the test user was created
-var insertUserPromise = null; 
+ 
 async function waitForInsertUser(){
-    while(insertUserPromise === null) {} //wait for promise to get initialized
+    var insertUserPromise;
+    while(insertUserPromise) {
+    var insertUserPromise = null} //wait for promise to get initialized
     await insertUserPromise;
 }
 

@@ -5,20 +5,20 @@ const util = require(path.join(__dirname, 'util'));
 const config = util.getConfig();
 const aesCrypto = require(path.join(__dirname, 'aescrypto'));
 const mysql = require('mysql2');
-var sqlite3 = null;
+const sqlite3 = null;
 const fs = require('fs');
 const async = require('async');
 
-var MYSQL_CONFIG = null;
-var liteDB = null;
+const MYSQL_CONFIG = null;
+const liteDB = null;
 
 if(util.isNullOrUndefined(config.dbHost)){
-  sqlite3 = require('sqlite3');
+  let sqlite3 = require('sqlite3');
 
   //use sqlite insted of mysql
-  var dbPath = "";
-  var dbFileName = "securecodingdojo.db";
-  var dataDir = util.getDataDir();
+  const dbPath = "";
+  const dbFileName = "securecodingdojo.db";
+  const dataDir = util.getDataDir();
   dbPath = path.join(dataDir, dbFileName);
   liteDB = new sqlite3.Database(dbPath);
 }
@@ -68,7 +68,7 @@ class Connection{
    * @param {*} params Optional array of parameters to pass to the statement
    */
   queryPromise(sql, params){
-    let promise = new Promise((resolve,reject) => {
+    let promise = new Promise((resolve,reject)  {
       this.query(sql,params,function(err,result){
         if(err){
           reject(err);
@@ -85,8 +85,8 @@ class Connection{
 
 
   exec(sql){
-    let promise = new Promise((resolve,reject) => {
-      var callback = (err,result) => {
+    let promise = new Promise((resolve,reject)  {
+      const callback = (err,result)  {
         if(err){
           reject(err);
         }
@@ -115,7 +115,7 @@ class Connection{
   }
 }
 
-var connection = new Connection();
+const connection = new Connection();
 
 /**
  * Returns a database connection to use
@@ -151,7 +151,7 @@ function handleDone(doneCb,result){
  * Utility function to get a promise from a db function 
  */
 exports.getPromise = function(dbFunc, params){
-  let promise = new Promise((resolve,reject) => {
+  let promise = new Promise((resolve,reject)  {
       if(util.isNullOrUndefined(params)) params = [];
       if(!Array.isArray(params)) params = [params];
       let count = params.length;
@@ -164,10 +164,10 @@ exports.getPromise = function(dbFunc, params){
   return promise;
 };
 
-exports.init = async () => {
-  var con = getConn();
-  var sql = "";
-  var dbSetup = "";
+exports.init = async ()  {
+  const con = getConn();
+  const sql = "";
+  const dbSetup = "";
   if(MYSQL_CONFIG!==null){
     sql = "SELECT * from users";
     dbSetup = "sql/dbsetup.mysql.sql";
@@ -177,8 +177,8 @@ exports.init = async () => {
     dbSetup = "sql/dbsetup.sqlite.sql";
   }
 
-  var error = null;
-  var result = null;
+  const error = null;
+  const result = null;
   try {
     result = await con.queryPromise(sql);
   } catch(err) {
@@ -186,12 +186,12 @@ exports.init = async () => {
     error = err;
   }
 
-  var setupNeeded = (MYSQL_CONFIG === null && result.length>0 && result[0].count===0) || (MYSQL_CONFIG !== null && error !== null);
+  const setupNeeded = (MYSQL_CONFIG === null && result.length>0 && result[0].count===0) || (MYSQL_CONFIG !== null && error !== null);
 
 
   if (setupNeeded){
     //there's no user table
-    var setupScript = fs.readFileSync(path.join(__dirname, dbSetup), 'utf8');
+    const setupScript = fs.readFileSync(path.join(__dirname, dbSetup), 'utf8');
     try {
       await con.exec(setupScript);
       util.log("Database tables created");
@@ -219,14 +219,14 @@ exports.init = async () => {
         
       //run the scripts for each missing version
       for(let ver = version+1; ver <= SCHEMA_VERSION; ver++){
-        var maintenanceFilePath = "sql/dbupgrade.v"+ver;
+        const maintenanceFilePath = "sql/dbupgrade.v"+ver;
         if(MYSQL_CONFIG!==null){
           maintenanceFilePath+=".mysql.sql";
         }
         else{
           maintenanceFilePath+=".sqlite.sql";
         }
-        var maintenanceScript = fs.readFileSync(path.join(__dirname, maintenanceFilePath), 'utf8');
+        const maintenanceScript = fs.readFileSync(path.join(__dirname, maintenanceFilePath), 'utf8');
         util.log(`Running database upgrade script '${maintenanceFilePath}'`);
         try {
           await con.exec(maintenanceScript);
@@ -256,8 +256,8 @@ exports.init = async () => {
 
 //Creates a user in the database
 exports.insertUser = function(user,errCb,doneCb){
-  var con = getConn();
-  var sql = "INSERT INTO users (id, accountId, teamId, familyName, givenName) VALUES (null, ?, ?, ?, ?)";
+  const con = getConn();
+  const sql = "INSERT INTO users (id, accountId, teamId, familyName, givenName) VALUES (null, ?, ?, ?, ?)";
   
   con.query(sql, [user.accountId, user.teamId, user.familyName, user.givenName], function (err, result) {
     if (err) handleErr(errCb,err);
@@ -267,8 +267,8 @@ exports.insertUser = function(user,errCb,doneCb){
 
 //gets the database schema version
 exports.getVersion = function(errCb,doneCb){
-  var con = getConn();
-  var sql = "SELECT version FROM dbInfo";
+  const con = getConn();
+  const sql = "SELECT version FROM dbInfo";
   con.query(sql, function (err, result) {
     if(err) handleErr(errCb,err); 
     else
@@ -281,8 +281,8 @@ exports.getVersion = function(errCb,doneCb){
 
 //fetches a user from the database
 exports.getUser = function(accountId,errCb,doneCb){
-  var con = getConn();
-  var sql = "SELECT * FROM users WHERE accountId = ? ";
+  const con = getConn();
+  const sql = "SELECT * FROM users WHERE accountId = ? ";
   con.query(sql, [accountId], function (err, result) {
     if(err) handleErr(errCb,err);
     else
@@ -294,17 +294,17 @@ exports.getUser = function(accountId,errCb,doneCb){
 };
 
 //fetches a user from the database by id
-exports.getUserById = async (userId) => {
-  var con = getConn();
-  var sql = "SELECT * FROM users WHERE id = ? ";
+exports.getUserById = async (userId)  {
+  const con = getConn();
+  const sql = "SELECT * FROM users WHERE id = ? ";
   let user = await con.queryPromise(sql,[userId]);
   return user;
 };
 
 //deletes a user from the database
 exports.deleteUser = function(accountId,errCb,doneCb){
-  var con = getConn();
-  var sql = "DELETE FROM users WHERE accountId = ? ";
+  const con = getConn();
+  const sql = "DELETE FROM users WHERE accountId = ? ";
   con.query(sql, [accountId], function (err, result) {
     if(err) handleErr(errCb,err);
     else handleDone(doneCb,result);
@@ -313,8 +313,8 @@ exports.deleteUser = function(accountId,errCb,doneCb){
 
 //updates the properties of a user in the database
 exports.updateUser = function(user,errCb,doneCb){
-  var con = getConn();
-  var sql = "UPDATE users SET accountId = ?, teamId = ?, familyName = ?, givenName = ? WHERE id = ?";
+  const con = getConn();
+  const sql = "UPDATE users SET accountId = ?, teamId = ?, familyName = ?, givenName = ? WHERE id = ?";
   con.query(sql, [user.accountId, user.teamId, user.familyName, user.givenName, user.id], function (err, result) {
     if(err) handleErr(errCb,err);
     else handleDone(doneCb,result);
@@ -324,8 +324,8 @@ exports.updateUser = function(user,errCb,doneCb){
 
 //fetches the list of users from the database only with public info
 exports.fetchUsers = function(errCb,doneCb){
-  var con = getConn();
-  var sql = "SELECT givenName,familyName,teamId FROM users";
+  const con = getConn();
+  const sql = "SELECT givenName,familyName,teamId FROM users";
   con.query(sql, function (err, result) {
       if(err) handleErr(errCb,err);
       else{
@@ -336,8 +336,8 @@ exports.fetchUsers = function(errCb,doneCb){
 
 //Creates a team in the database
 exports.insertTeam = function(user,team,errCb,doneCb){
-  var con = getConn();
-  var sql = "INSERT INTO teams (id, name, ownerid) VALUES (null, ?, ?);";
+  const con = getConn();
+  const sql = "INSERT INTO teams (id, name, ownerid) VALUES (null, ?, ?);";
   async.waterfall([
     //Execute insert statement
     function(cb){
@@ -379,8 +379,8 @@ exports.insertTeam = function(user,team,errCb,doneCb){
 
 //fetches the list of teams from the database
 exports.fetchTeams = function(errCb,doneCb){
-  var con = getConn();
-  var sql = "SELECT * FROM teams order by name";
+  const con = getConn();
+  const sql = "SELECT * FROM teams order by name";
   con.query(sql, function (err, result) {
       if(err) handleErr(errCb,err);
       else{
@@ -391,15 +391,15 @@ exports.fetchTeams = function(errCb,doneCb){
 
 //fetches a team and its members from the database by its name (unique)
 exports.getTeamWithMembersByName = function(name,errCb,doneCb){
-  var con = getConn();
-  var sql = "SELECT * FROM teams WHERE name = ? ";
+  const con = getConn();
+  const sql = "SELECT * FROM teams WHERE name = ? ";
   con.query(sql, [name], function (err, result) {
       if(err) handleErr(errCb,err);
       else{
       if(result.length >= 1){
-        var team = result[0];
+        const team = result[0];
         //execute one more query to get the team members
-        var sql = "SELECT givenName,familyName FROM users WHERE teamId = ?";
+        const sql = "SELECT givenName,familyName FROM users WHERE teamId = ?";
         con.query(sql, [team.id], function (err, result) {
           if(err) handleErr(errCb,err);
           else{
@@ -415,8 +415,8 @@ exports.getTeamWithMembersByName = function(name,errCb,doneCb){
 
 //fetches a team from the database by id
 exports.getTeamById = function(id,errCb,doneCb){
-  var con = getConn();
-  var sql = "SELECT * FROM teams WHERE id = ? ";
+  const con = getConn();
+  const sql = "SELECT * FROM teams WHERE id = ? ";
   con.query(sql, [id], function (err, result) {
       if(err) handleErr(errCb,err);
       else{
@@ -430,8 +430,8 @@ exports.getTeamById = function(id,errCb,doneCb){
 
 //updates the properties of a team in the database
 exports.updateTeam = function(user, team, errCb,doneCb){
-  var con = getConn();
-  var sql = "UPDATE teams SET name = ?, description = ? WHERE id = ? and ownerId = ?";
+  const con = getConn();
+  const sql = "UPDATE teams SET name = ?, description = ? WHERE id = ? and ownerId = ?";
   con.query(sql, [team.name, team.description, team.id, user.id], function (err, result) {
     if(err) handleErr(errCb,err);
     else handleDone(doneCb,result);
@@ -441,13 +441,13 @@ exports.updateTeam = function(user, team, errCb,doneCb){
 
 //deletes a team from the database
 exports.deleteTeam = function(user,teamId,errCb,doneCb){
-  var con = getConn();
-  var sql = "DELETE FROM teams WHERE id = ? and ownerId = ?";
+  const con = getConn();
+  const sql = "DELETE FROM teams WHERE id = ? and ownerId = ?";
   con.query(sql, [teamId, user.id], function (err, result) {
     if(err) handleErr(errCb,err);
     else{
       //set all users that are part of this team to have teamId null
-      var sql = "UPDATE users SET teamId = null WHERE teamId = ?";
+      const sql = "UPDATE users SET teamId = null WHERE teamId = ?";
       con.query(sql, [teamId], function (err, result) {
         if(err) handleErr(errCb,err);
         else handleDone(doneCb,result);
@@ -460,7 +460,7 @@ exports.deleteTeam = function(user,teamId,errCb,doneCb){
 /**
  * Gets a team members with completed modules
  */
-exports.getTeamMembersByBadges = async (teamId, days) => {
+exports.getTeamMembersByBadges = async (teamId, days)  {
   let con = getConn();
   let sql = "SELECT badges.moduleId, badges.timestamp, users.givenName, users.familyName FROM users LEFT JOIN badges on badges.userId=users.id";
   let args = [];
@@ -475,7 +475,7 @@ exports.getTeamMembersByBadges = async (teamId, days) => {
     let now = new Date();
     now.setDate(now.getDate()-days);
     let ts = now.getTime();
-    result = result.filter(record => {
+    result = result.filter(record  {
       if(!record.timestamp) return false;
       let recordTs = new Date(record.timestamp).getTime();
       return recordTs > ts;
@@ -487,7 +487,7 @@ exports.getTeamMembersByBadges = async (teamId, days) => {
 /**
  * Gets a list of users for a module id
  */
-exports.getAllUsersForBadge = async (moduleId) => {
+exports.getAllUsersForBadge = async (moduleId)  {
   let con = getConn();
   let sql = "SELECT badges.moduleId, users.givenName, users.familyName FROM users INNER JOIN badges on badges.userId=users.id WHERE badges.moduleId = ? "+
   " order by badges.moduleId, users.givenName, users.familyName";
@@ -497,13 +497,13 @@ exports.getAllUsersForBadge = async (moduleId) => {
 
 //Creates a user in the database
 exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
-  var con = getConn();
-  var sql = "DELETE FROM challengeEntries WHERE userId = ? and challengeId = ?";
+  const con = getConn();
+  const sql = "DELETE FROM challengeEntries WHERE userId = ? and challengeId = ?";
   con.query(sql, [userId,challengeId], function (err, result) {
     if (err) handleErr(errCb,err);
     else{
-      var timeStamp = Date().toString();
-      var sql = "INSERT INTO challengeEntries (id, userId, challengeId, timestamp) VALUES (null, ?, ?, ?)";
+      const timeStamp = Date().toString();
+      const sql = "INSERT INTO challengeEntries (id, userId, challengeId, timestamp) VALUES (null, ?, ?, ?)";
       con.query(sql, [userId, challengeId, timeStamp], function (err, result) {
         if (err) handleErr(errCb,err);
         else handleDone(doneCb,result);
@@ -515,13 +515,13 @@ exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
 /**
  * Inserts a badge for a completed training module
  */
-exports.insertBadge = async (userId, moduleId) => {
-  var con = getConn();
+exports.insertBadge = async (userId, moduleId)  {
+  const con = getConn();
 
-  var sql = "DELETE FROM badges WHERE userId = ? and moduleId = ?"; //in the unlikely situation they exist replace badges for the same module
+  const sql = "DELETE FROM badges WHERE userId = ? and moduleId = ?"; //in the unlikely situation they exist replace badges for the same module
   await con.queryPromise(sql,[userId, moduleId]);
   
-  var timeStamp = Date().toString();
+  const timeStamp = Date().toString();
   sql = "INSERT INTO badges (id, userId, moduleId, timestamp) VALUES (null, ?, ?, ?)";
   await con.queryPromise(sql,[userId, moduleId, timeStamp]);
 };
@@ -530,7 +530,7 @@ exports.insertBadge = async (userId, moduleId) => {
 /**
  * Returns the badges for the specified user
  */
-exports.fetchBadges = async (userId) => {
+exports.fetchBadges = async (userId)  {
   let con = getConn();
 
   let sql = "SELECT * FROM badges WHERE userId = ?"; 
@@ -540,8 +540,8 @@ exports.fetchBadges = async (userId) => {
 
 //fetches the list of teams from the database
 exports.fetchChallengeEntriesForUser = function(user,errCb,doneCb){
-  var con = getConn();
-  var sql = "SELECT * FROM challengeEntries WHERE userId = ?";
+  const con = getConn();
+  const sql = "SELECT * FROM challengeEntries WHERE userId = ?";
   con.query(sql, [user.id], function (err, result) {
       if(err) handleErr(errCb,err);
       else{
@@ -558,12 +558,12 @@ exports.fetchChallengeEntriesForUser = function(user,errCb,doneCb){
  * @param {*} doneCb 
  */
 exports.fetchActivity = function(query,limit,errCb,doneCb){
-  var con = getConn();
-  var sql = "";
-  var args = [];
+  const con = getConn();
+  const sql = "";
+  const args = [];
   if(!util.isNullOrEmpty(query)){
     query = "%"+query+"%";
-    var concat = "CONCAT(users.givenName,' ',users.familyName)";
+    const concat = "CONCAT(users.givenName,' ',users.familyName)";
     if(MYSQL_CONFIG===null){
       concat = "users.givenName || ' ' || users.familyName";
     }
@@ -590,9 +590,9 @@ exports.fetchActivity = function(query,limit,errCb,doneCb){
  * @param {*} doneCb 
  */
 exports.getChallengeStats = function(errCb,doneCb){
-  var con = getConn();
-  var sql = "SELECT challengeId,count(*) as achieved from challengeEntries group by challengeId order by achieved asc;";
-  var args = [];
+  const con = getConn();
+  const sql = "SELECT challengeId,count(*) as achieved from challengeEntries group by challengeId order by achieved asc;";
+  const args = [];
   con.query(sql, args, function (err, result) {
     if(err) handleErr(errCb,err);
     else{
@@ -606,10 +606,10 @@ exports.getChallengeStats = function(errCb,doneCb){
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-exports.getModuleStats = async () => {
-  var con = getConn();
-  var sql = "SELECT badges.moduleId, count(*) as playerCount FROM badges group by badges.moduleId";
-  var args = [];
+exports.getModuleStats = async ()  {
+  const con = getConn();
+  const sql = "SELECT badges.moduleId, count(*) as playerCount FROM badges group by badges.moduleId";
+  const args = [];
   
   return con.queryPromise(sql, args);
 };
@@ -619,14 +619,14 @@ exports.getModuleStats = async () => {
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-exports.getTeamStats= async (limit) => {
-  var con = getConn();
+exports.getTeamStats= async (limit)  {
+  const con = getConn();
 
   let result = await con.queryPromise("select * from users");
   const allPlayerCount = result.length;
 
-  var sql = "SELECT teams.id as id, teams.name as teamName, count(users.id) as playerCount from teams INNER JOIN users on users.teamId=teams.id group by teams.id order by playerCount desc";
-  var args = [];
+  const sql = "SELECT teams.id as id, teams.name as teamName, count(users.id) as playerCount from teams INNER JOIN users on users.teamId=teams.id group by teams.id order by playerCount desc";
+  const args = [];
 
   if(limit!==null){
     sql+=" limit ?";

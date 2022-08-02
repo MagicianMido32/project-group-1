@@ -1,4 +1,4 @@
-var app = angular.module('challengesApp', ['ngRoute','dataSvcModule']);
+let app = angular.module('challengesApp', ['ngRoute','dataSvcModule']);
 
 app.config(function($routeProvider) {
     $routeProvider
@@ -44,9 +44,9 @@ app.directive('highlightCode', [ function(){
         }
     }
 
-    function linkFunc (scope, element, attrs) {
+    function linkFunc (_scope, element, _attrs) {
         for(let domEl of element){
-            var preList = domEl.querySelectorAll('pre');
+            let preList = domEl.querySelectorAll('pre');
             setTimeout(doHighlight,1,preList)   
         }        
     }
@@ -56,11 +56,11 @@ app.directive('highlightCode', [ function(){
     } 
 }])
 
-app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function($scope, $http, $location, dataSvc) {
+app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function($scope, $http, $location, _dataSvc) {
     
 
     //redirect the user to the previous page if they got logged out
-    var redirectPath = window.sessionStorage.getItem("redirectPath");
+    let redirectPath = window.sessionStorage.getItem("redirectPath");
     if(redirectPath!=null && redirectPath!=="" && redirectPath.indexOf("/")===0){
         //clear the session storage
         window.sessionStorage.removeItem("redirectPath");
@@ -72,8 +72,8 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
             .then(function(response) {
                 if(response != null && response.data != null && response.status === 200){
                     if(response.data.length > 0){
-                        var activity = response.data[0];
-                        var message = activity.givenName + " " + activity.familyName + " has solved '" +
+                        let activity = response.data[0];
+                        let message = activity.givenName + " " + activity.familyName + " has solved '" +
                         activity.challengeName + "'";
                         $scope.showActivityMessage = $scope.latestActivityMessage !== message;
                         if($scope.showActivityMessage && $scope.fetchActivity){
@@ -94,7 +94,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
     }
 
     $scope.fetchActivity = function(){
-        var filter = "";
+        let filter = "";
         if(typeof nameFilter !== 'undefined'){
             filter=nameFilter.value;
         }
@@ -155,7 +155,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                     }
 
                 }
-            },function(errorResponse){
+            },function(_errorResponse){
                     $scope.isTeamSaveError = true;
                     $scope.teamSaveErrorMessage = "A http error has occured.";
                     
@@ -168,13 +168,13 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
             .then(function(response) {
                 if(response != null && response.data != null){
                     $scope.teamNames = {};
-                    var teamList = response.data;
+                    let teamList = response.data;
                     //create a map of team names to team ids
                     for(let team of teamList){
                         $scope.teamNames[team.id] = team.name;
                     }
                     $http.get("/api/users",window.getAjaxOpts())
-                    .then(function(response) {
+                    .then(function() {
                         if(response != null && response.data != null){
 
                             for(let team of teamList){
@@ -216,7 +216,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                 $scope.teamSaveErrorMessage = "No team was selected";
             }
             else{
-                var teamId = $scope.existingTeamSelect;
+                let teamId = $scope.existingTeamSelect;
                 //update the team
                 $http.post("/api/user/team",{
                     "teamId": teamId
@@ -237,7 +237,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                         }
 
                     }
-                },function(errorResponse){
+                },function(_errorResponse){
                     $scope.isTeamSaveError = true;
                     $scope.teamSaveErrorMessage = "A http error has occured.";
                     
@@ -247,7 +247,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
         }
         else{
             //the user is creating a new team and they will become the team leader
-            var teamName = newTeamName.value;
+            let teamName = newTeamName.value;
             $http.post("/api/teams",{
                     name:teamName
                 }, window.getAjaxOpts())
@@ -255,7 +255,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                     if(response != null && response.data != null){
                         if(response.data.status == 200){
                             //team saved
-                            team = response.data.result;
+                            //let team = response.data.result;
                             $scope.user.teamId = response.data.result.id;
                             $scope.isTeamSaveSuccess = true;
                             $scope.teamSaveSuccessMessage = response.data.statusMessage;
@@ -268,7 +268,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                         }
 
                     }
-                },function(errorResponse){
+                },function(_errorResponse){
                     $scope.isTeamSaveError = true;
                     $scope.teamSaveErrorMessage = "An http error has occured.";
                     
@@ -281,7 +281,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
         $scope.isProfileSaveError = false;
         $scope.isProfileSaveSuccess = false;
         $scope.profileSaveErrorMessage = "";
-        var profileInfo = {};
+        let profileInfo = {};
         profileInfo.curPassword = currentPassword.value.trim();
         profileInfo.newPassword = newPassword.value.trim();
         
@@ -304,7 +304,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                 }
 
             }
-        },function(errorResponse){
+        },function(_errorResponse){
             $scope.isProfileSaveError = true;
             $scope.profileSaveErrorMessage = "A http error has occurred.";
             
@@ -316,7 +316,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
         $http.get("/api/user",window.getAjaxOpts())
         .then(function(response) {
             if(response != null && response.data != null){
-                var user = response.data;
+                let user = response.data;
                 
                 $scope.user = user;
                 $scope.fullName = user.givenName + ' ' + user.familyName;
@@ -329,7 +329,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                 
             
                 //get the code blocks definitions
-                $http.get("static/codeBlocks/codeBlocksDefinitions.json").then(function(response) {
+                $http.get("static/codeBlocks/codeBlocksDefinitions.json").then(function() {
                     if(response != null && response.data != null){
                         $scope.codeBlocks = response.data;
 
@@ -345,14 +345,14 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
     
 
     $scope.throwConfetti = function() {
-        var duration = 15 * 1000;
-        var animationEnd = Date.now() + duration;
-        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-        var timeLeft = animationEnd - Date.now();
+        let duration = 15 * 1000;
+        let animationEnd = Date.now() + duration;
+        let defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+        let timeLeft = animationEnd - Date.now();
         
-        var particleCount = 50 * (timeLeft / duration);
+        let particleCount = 50 * (timeLeft / duration);
 
-        var randomInRange = (min,max) => { Math.random() * (max - min) + min }
+        let randomInRange = (min,max); 
         // since particles fall down, start a bit higher than random
         confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
         confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));

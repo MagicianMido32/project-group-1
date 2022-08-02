@@ -4,15 +4,15 @@
     <ul>
       <li>Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')
         <blockquote>
-          <i>The program copies an input buffer to an output buffer without verifying that the size of 
-            the input buffer is less than the size of the output buffer, leading to a buffer overflow.</i>    
+          <em>The program copies an input buffer to an output buffer without verifying that the size of 
+            the input buffer is less than the size of the output buffer, leading to a buffer overflow.</em>    
           <footer>From MITRE <a target="_blank" rel="noopener noreferrer" href="https://cwe.mitre.org/data/definitions/120.html">CWE 120</a></footer>
         </blockquote>
       </li>
       <li>Use of Potentially Dangerous Function
         <blockquote>
-          <i>The program invokes a potentially dangerous function that could introduce a vulnerability if it is used incorrectly, 
-            but the function can also be used safely.</i>    
+          <em>The program invokes a potentially dangerous function that could introduce a vulnerability if it is used incorrectly, 
+            but the function can also be used safely.</em>    
           <footer>From MITRE <a target="_blank" rel="noopener noreferrer" href="https://cwe.mitre.org/data/definitions/676.html">CWE 676</a></footer>
         </blockquote>
       </li>
@@ -22,13 +22,13 @@
   <ul>
       <li>Incorrect Calculation of Buffer Size 
         <blockquote>
-          <i>The software does not correctly calculate the size to be used when allocating a buffer, which could lead to a buffer overflow.</i>    
+          <em>The software does not correctly calculate the size to be used when allocating a buffer, which could lead to a buffer overflow.</em>    
           <footer>From MITRE <a target="_blank" rel="noopener noreferrer" href="https://cwe.mitre.org/data/definitions/131.html">CWE 131</a></footer>
         </blockquote>
       </li>
       <li>Use of Externally-Controlled Format String
         <blockquote>
-          <i>The software uses a function that accepts a format string as an argument, but the format string originates from an external source</i>    
+          <em>The software uses a function that accepts a format string as an argument, but the format string originates from an external source</em>    
           <footer>From MITRE <a target="_blank" rel="noopener noreferrer" href="https://cwe.mitre.org/data/definitions/134.html">CWE 134</a></footer>
         </blockquote>
       </li>
@@ -55,10 +55,11 @@ The variables are stored in the memory as seen in the simplistic example below. 
 <div class="container">
 
 <table class="table">
-  <tr><th>Variable</th><th>Address</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
-  <tr><th><mark>b</mark></th><td>0x0000</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-  <tr><th>a</th><td>0x0004</td><td>H</td><td>i</td><td>!</td><td>0</td></tr>
-  <tr><th>instruction</th><td>0xd32a</td><td>5</td><td>$</td><td>x</td><td>1</td></tr>
+<caption>variable & address buffer overflow.</caption>
+  <tr><th scope="row">Variable</th><th scope="row">Address</th><th scope="row">0</th><th scope="row">1</th><th scope="row">2</th><th scope="row">3</th></tr>
+  <tr><th scope="row"><mark>b</mark></th><td>0x0000</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+  <tr><th scope="row">a</th><td>0x0004</td><td>H</td><td>i</td><td>!</td><td>0</td></tr>
+  <tr><th scope="row">instruction</th><td>0xd32a</td><td>5</td><td>$</td><td>x</td><td>1</td></tr>
 </table>
 
 </div>
@@ -67,10 +68,11 @@ If the user enters the string <code>AAAAA</code> the following will happen.
 </p>
 <div class="container">
 <table class="table">
-  <tr><th>Variable</th><th>Address</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
-  <tr><th><mark>b</mark></th><td>0x0000</td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td></tr>
-  <tr><th>a</th><td>0x0004</td><td><code>A</code></td><td>i</td><td>!</td><td>0</td></tr>
-  <tr><th>instruction</th><td>0xd32a</td><td>5</td><td>$</td><td>x</td><td>1</td></tr>
+<caption>variable & address buffer overflow.</caption>
+  <tr><th scope="row">Variable</th><th scope="row">Address</th><th scope="row">0</th><th scope="row">1</th><th scope="row">2</th><th scope="row">3</th></tr>
+  <tr><th scope="row"><mark>b</mark></th><td>0x0000</td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td></tr>
+  <tr><th scope="row">a</th><td>0x0004</td><td><code>A</code></td><td>i</td><td>!</td><td>0</td></tr>
+  <tr><th scope="row">instruction</th><td>0xd32a</td><td>5</td><td>$</td><td>x</td><td>1</td></tr>
 </table>
 </div>
 <p>
@@ -82,10 +84,11 @@ If the user enters a sufficiently long value they will hit the instruction area 
 </p>
 <div class="container">
 <table class="table">
-  <tr><th>Variable</th><th>Address</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
-  <tr><th><mark>b</mark></th><td>0x0000</td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td></tr>
-  <tr><th>a</th><td>0x0004</td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td></tr>
-  <tr><th>instruction</th><td>0xd32a</td><td><code>A</code></td><td><code>A</code></td><td>x</td><td>1</td></tr>
+<caption>variable & address buffer overflow.</caption>
+  <tr><th scope="row">Variable</th><th scope="row">Address</th><th scope="row">0</th><th scope="row">1</th><th scope="row">2</th><th scope="row">3</th></tr>
+  <tr><th scope="row"><mark>b</mark></th><td>0x0000</td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td></tr>
+  <tr><th scope="row">a</th><td>0x0004</td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td></tr>
+  <tr><th scope="row">instruction</th><td>0xd32a</td><td><code>A</code></td><td><code>A</code></td><td>x</td><td>1</td></tr>
 </table>
 </div>
 

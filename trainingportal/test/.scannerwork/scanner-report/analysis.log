@@ -1,0 +1,32 @@
+SonarQube plugins:
+  - Python Code Quality and Security 3.13.0.9611 (python)
+  - Go Code Quality and Security 1.9.0.3429 (go)
+  - JaCoCo 1.1.1.1157 (jacoco)
+  - Kotlin Code Quality and Security 2.9.0.1147 (kotlin)
+  - IaC Code Quality and Security 1.7.0.2012 (iac)
+  - JavaScript/TypeScript/CSS Code Quality and Security 9.3.0.18033 (javascript)
+  - Ruby Code Quality and Security 1.9.0.3429 (ruby)
+  - Scala Code Quality and Security 1.9.0.3429 (sonarscala)
+  - C# Code Quality and Security 8.40.0.48530 (csharp)
+  - Java Code Quality and Security 7.12.0.29739 (java)
+  - HTML Code Quality and Security 3.6.0.3106 (web)
+  - Flex Code Quality and Security 2.7.0.2865 (flex)
+  - XML Code Quality and Security 2.5.0.3376 (xml)
+  - PHP Code Quality and Security 3.23.1.8766 (php)
+  - Text file Code Quality and Security 1.1.0.282 (text)
+  - VB.NET Code Quality and Security 8.40.0.48530 (vbnet)
+  - Configuration detection fot Code Quality and Security 1.2.0.267 (config)
+Global server settings:
+  - sonar.core.id=147B411E-AYJVj2lCgiccxOqyK-_2
+  - sonar.core.startTime=2022-07-31T18:40:30+0000
+  - sonar.forceAuthentication=true
+Project server settings:
+Project scanner properties:
+  - sonar.host.url=http://localhost:9000/
+  - sonar.login=******
+  - sonar.projectBaseDir=/usr/src
+  - sonar.projectKey=Testing
+  - sonar.scanner.app=ScannerCLI
+  - sonar.scanner.appVersion=4.7.0.2747
+  - sonar.sourceEncoding=UTF-8
+  - sonar.working.directory=/usr/src/.scannerwork

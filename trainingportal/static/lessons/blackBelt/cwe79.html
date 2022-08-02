@@ -4,16 +4,16 @@
 <br><br>
 
   <blockquote>
-         <i>The software does not neutralize or incorrectly neutralizes user-controllable input before
-              it is placed in output that is used as a web page that is served to other users.</i>
+         <em>The software does not neutralize or incorrectly neutralizes user-controllable input before
+              it is placed in output that is used as a web page that is served to other users.</em>
     <footer>From MITRE <a target="_blank" rel="noopener noreferrer" href="https://cwe.mitre.org/data/definitions/79.html">CWE 79</a></footer>
   </blockquote>
   <p>Another Top 25 flaw that is related to XSS is "Inclusion of Functionality from Untrusted Control Sphere". 
       This particular weakness refers to including potentially malicious 3rd party widgets(which are script includes) into a web application.</p>
   <blockquote>
-         <i>When including third-party functionality, such as a web widget, library, or other source of functionality, the software must effectively 
+         <em>When including third-party functionality, such as a web widget, library, or other source of functionality, the software must effectively 
              trust that functionality. Without sufficient protection mechanisms, the functionality
-              could be malicious in nature (either by coming from an untrusted source, being spoofed, or being modified in transit from a trusted source). </i>
+              could be malicious in nature (either by coming from an untrusted source, being spoofed, or being modified in transit from a trusted source). </em>
     <footer>From MITRE <a target="_blank" rel="noopener noreferrer" href="https://cwe.mitre.org/data/definitions/829.html">CWE 829</a></footer>
   </blockquote>
   <br>
@@ -35,6 +35,7 @@ XSS is relatively easy to find by novice testers while at the same time can be v
 <p>
     Here's just a few.
 <table class="table table-sm">
+<caption> many areas need to be protected and many different type of payloads depending on each area</caption>
     <thead>
         <tr>
             <th>Page context</th>
